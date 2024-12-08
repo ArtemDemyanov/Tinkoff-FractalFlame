@@ -1,6 +1,6 @@
 package backend.academy.generate;
 
-import backend.academy.domain.Color;
+import backend.academy.domain.PixelColor;
 import backend.academy.domain.Point;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.AffineTransformation;
@@ -43,7 +43,7 @@ public class FlameGenerator {
         Point currentPoint = new Point(random.nextDouble() * 2 - 1, random.nextDouble() * 2 - 1);
         for (int i = 0; i < iterations; i++) {
             AffineTransformation affineTransformation = affineTransformations
-                .get(random.nextInt(affineTransformations.size()));
+                    .get(random.nextInt(affineTransformations.size()));
             Transformation transformation = transformations.get(random.nextInt(transformations.size()));
             currentPoint = affineTransformation.transform(currentPoint);
             currentPoint = transformation.transform(currentPoint);
@@ -57,12 +57,12 @@ public class FlameGenerator {
      * @param point точка, для которой вычисляется цвет.
      * @return объект Color, содержащий значения RGB.
      */
-    private Color getPointColor(Point point) {
+    private PixelColor getPointColor(Point point) {
         double r2 = point.x() * point.x() + point.y() * point.y();
         int r = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(r2)));
-            int g = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.x() * Math.PI)));
+        int g = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.x() * Math.PI)));
         int b = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.y() * Math.PI)));
 
-        return new Color(r, g, b);
+        return new PixelColor(r, g, b);
     }
 }

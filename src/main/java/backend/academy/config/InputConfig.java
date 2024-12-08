@@ -39,8 +39,8 @@ public class InputConfig {
         return generationSettings.iterations();
     }
 
-    public int affineTransformationsCount() {
-        return generationSettings.affineTransformationsCount();
+    public int affineTransformations() {
+        return generationSettings.affineTransformations();
     }
 
     public boolean multithreaded() {
@@ -51,7 +51,6 @@ public class InputConfig {
         return generationSettings.threads();
     }
 
-    // Геттер для трансформаций
     public List<String> transformations() {
         return transformations;
     }
@@ -64,7 +63,7 @@ public class InputConfig {
     /**
      * Класс для параметров генерации.
      */
-    public record GenerationSettings(int samples, int iterations, int affineTransformationsCount, boolean multithreaded,
-                                         int threads) {
+    public record GenerationSettings(int samples, int iterations, int affineTransformations, boolean multithreaded,
+                                     int threads) {
     }
 }

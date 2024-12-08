@@ -1,7 +1,6 @@
 package backend.academy.domain;
 
 import lombok.Getter;
-import lombok.Setter;
 
 /**
  * Класс Pixel используется для представления пикселя на изображении.
@@ -12,8 +11,6 @@ import lombok.Setter;
     private int green;
     private int blue;
     private int pointsCount;
-    @Setter
-    private double normal;
 
     /**
      * Создает пиксель с заданными значениями цвета.
@@ -42,15 +39,15 @@ import lombok.Setter;
 
     /**
      * Добавляет цвет к пикселю, усредняя его с существующим цветом на основе количества попаданий.
-     * @param color Цвет, который будет добавлен к пикселю.
+     * @param pixelColor Цвет, который будет добавлен к пикселю.
      */
-    public void addPoint(Color color) {
+    public void addPoint(PixelColor pixelColor) {
         if (pointsCount == 0) {
-            setRGB(color.r(), color.g(), color.b());
+            setRGB(pixelColor.red(), pixelColor.green(), pixelColor.blue());
         } else {
-            red = (red + color.r()) / 2;
-            green = (green + color.g()) / 2;
-            blue = (blue + color.b()) / 2;
+            red = (red + pixelColor.red()) / 2;
+            green = (green + pixelColor.green()) / 2;
+            blue = (blue + pixelColor.blue()) / 2;
         }
         this.pointsCount++;
     }
@@ -59,7 +56,7 @@ import lombok.Setter;
      * Возвращает цвет пикселя.
      * @return объект Color, представляющий цвет пикселя.
      */
-    public Color getColor() {
-        return new Color(red, green, blue);
+    public PixelColor getColor() {
+        return new PixelColor(red, green, blue);
     }
 }

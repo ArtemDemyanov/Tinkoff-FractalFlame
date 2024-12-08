@@ -43,8 +43,10 @@ public class PerformanceTest {
 
         Renderer renderer = new Renderer(singleThreadConfig.width(), singleThreadConfig.height(), singleThreadConfig.axesCount());
 
-        SingleThreadedGenerator singleThreadedGenerator = new SingleThreadedGenerator(singleThreadConfig, createTransformations(), renderer);
-        MultiThreadedGenerator multiThreadedGenerator = new MultiThreadedGenerator(multiThreadConfig, createTransformations(), renderer);
+        SingleThreadedGenerator
+            singleThreadedGenerator = new SingleThreadedGenerator(singleThreadConfig, createTransformations(), renderer);
+        MultiThreadedGenerator
+            multiThreadedGenerator = new MultiThreadedGenerator(multiThreadConfig, createTransformations(), renderer);
 
         long singleThreadStartTime = System.nanoTime();
         singleThreadedGenerator.generate();

@@ -22,7 +22,7 @@ public final class InputHandler {
     private static final String POLAR = "polar";
     private static final String SWIRL = "swirl";
     private static final String SINUSOIDAL = "sinusoidal";
-    private static final List<String> DEFAULT_TRANSFORMATIONS = List.of(SPHERICAL, HEART, POLAR, SWIRL, SINUSOIDAL);
+    private static final List<String> DEFAULT_TRANSFORMATIONS = List.of(SPHERICAL);
 
     private static final String INVALID_INPUT_MSG = "Некорректный ввод. Используется значение по умолчанию: ";
     private static final String UNKNOWN_TRANSFORMATION_MSG = "Неизвестная трансформация: ";
@@ -106,15 +106,24 @@ public final class InputHandler {
         List<Transformation> transformations = new ArrayList<>();
         for (String name : names) {
             switch (name.toLowerCase()) {
-                case SPHERICAL -> transformations.add(new SphericalTransformation());
-                case HEART -> transformations.add(new HeartTransformation());
-                case POLAR -> transformations.add(new PolarTransformation());
-                case SWIRL -> transformations.add(new SwirlTransformation());
-                case SINUSOIDAL -> transformations.add(new SinusoidalTransformation());
-                default -> {
+                case SPHERICAL:
+                    transformations.add(new SphericalTransformation());
+                    continue;
+                case HEART:
+                    transformations.add(new HeartTransformation());
+                    continue;
+                case POLAR:
+                    transformations.add(new PolarTransformation());
+                    continue;
+                case SWIRL:
+                    transformations.add(new SwirlTransformation());
+                    continue;
+                case SINUSOIDAL:
+                    transformations.add(new SinusoidalTransformation());
+                    break;
+                default:
                     OUT.println(UNKNOWN_TRANSFORMATION_MSG + name);
                     throw new IllegalArgumentException(UNKNOWN_TRANSFORMATION_MSG + name);
-                }
             }
         }
         return transformations;

@@ -22,8 +22,8 @@ public class EntryPoint {
     private static final int DEFAULT_ITERATIONS = 10000000;
     public static final int DEFAULT_AFFINE_COUNT = 5;
     private static final int DEFAULT_THREADS = 4;
-    private static final int DEFAULT_AXES = 2;
-    private static final double DEFAULT_GAMMA = 2.2;
+    private static final int DEFAULT_AXES = 8;
+    private static final double DEFAULT_GAMMA = 2.5;
 
     /**
      * Запускает процесс генерации фракталов, руководствуясь вводом пользователя.
@@ -74,18 +74,16 @@ public class EntryPoint {
             List<Transformation> transformations = InputHandler.createTransformations(transformationNames);
 
             if (config.multithreaded()) {
-                MultiThreadedGenerator
-                    multiGenerator = new MultiThreadedGenerator(config, transformations, renderer);
+                MultiThreadedGenerator multiGenerator = new MultiThreadedGenerator(config, transformations, renderer);
                 multiGenerator.generate();
             } else {
-                SingleThreadedGenerator
-                    generator = new SingleThreadedGenerator(config, transformations, renderer);
+                SingleThreadedGenerator generator = new SingleThreadedGenerator(config, transformations, renderer);
                 generator.generate();
             }
-            renderer.applyGammaCorrection(gamma);
-            renderer.renderImage();
+            renderer.applyGamma(gamma);
+            renderer.render();
             renderer.saveImage();
-            out.println("Фрактал успешно сгенерирован и сохранён в src/main/resources/fractal.png");
+            out.println("Изображение сохранено в src/main/resources/fractal.png");
         } catch (InterruptedException e) {
             throw new RuntimeException(e);
         }

@@ -1,6 +1,6 @@
 package backend.academy.render;
 
-import backend.academy.domain.Color;
+import backend.academy.domain.PixelColor;
 import backend.academy.domain.Pixel;
 import backend.academy.domain.Point;
 import backend.academy.models.FractalImage;
@@ -8,6 +8,7 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.IntStream;
 import javax.imageio.ImageIO;
 
 /**
@@ -25,7 +26,7 @@ public class Renderer {
 
     private final BufferedImage image;
     private final FractalImage fractalImage;
-    private final int axesCount;
+    private final List<double[]> precomputedAngles;
 
     /**
      * Создаёт экземпляр Renderer с заданными параметрами.
@@ -37,40 +38,45 @@ public class Renderer {
     public Renderer(int width, int height, int axesCount) {
         this.image = new BufferedImage(width, height, BufferedImage.TYPE_INT_RGB);
         this.fractalImage = new FractalImage(width, height);
-        this.axesCount = axesCount;
+        this.precomputedAngles = new ArrayList<>();
+        double angleStep = FULL_CIRCLE_DEGREE / axesCount;
+        for (int i = 0; i < axesCount; i++) {
+            double angle = Math.toRadians(i * angleStep);
+            precomputedAngles.add(new double[]{Math.cos(angle), Math.sin(angle)});
+        }
     }
 
     /**
      * Рендерит точку и её симметричные отображения.
      *
      * @param point Точка для рендеринга.
-     * @param color Цвет точки.
+     * @param pixelColor Цвет точки.
      */
-    public void renderPoint(Point point, Color color) {
-        List<Point> points = getSymmetryPoints(point);
+    public void renderPoint(Point point, PixelColor pixelColor) {
+        List<Point> points = applySymmetry(point);
         points.add(point);
-        points.forEach(p -> setPixel(p.x(), p.y(), color));
+        points.forEach(p -> setPixel(p.x(), p.y(), pixelColor));
     }
 
     /**
      * Выводит окончательное изображение.
      */
-    public void renderImage() {
-        for (int y = 0; y < image.getHeight(); y++) {
+    public void render() {
+        IntStream.range(0, image.getHeight()).parallel().forEach(y -> {
             for (int x = 0; x < image.getWidth(); x++) {
                 Pixel pixel = fractalImage.getPixel(x, y);
                 image.setRGB(x, y, pixel.getColor().getRGB());
             }
-        }
+        });
     }
 
     /**
      * Применяет гамма-коррекцию к изображению.
      *
-     * @param gamma Коэффициент гаммы.
+     * @param gammaCoefficient Коэффициент гаммы.
      */
-    public void applyGammaCorrection(double gamma) {
-        double power = 1.0 / gamma;
+    public void applyGamma(double gammaCoefficient) {
+        double power = 1.0 / gammaCoefficient;
 
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
@@ -97,17 +103,19 @@ public class Renderer {
      *
      * @param x Горизонтальная координата пикселя.
      * @param y Вертикальная координата пикселя.
-     * @param color Цвет пикселя.
+     * @param pixelColor Цвет пикселя.
      */
-    private void setPixel(double x, double y, Color color) {
+    private void setPixel(double x, double y, PixelColor pixelColor) {
         int xInt = (int) ((x + 1) * image.getWidth() / 2);
         int yInt = (int) ((y + 1) * image.getHeight() / 2);
 
-        if (xInt >= 0 && xInt < image.getWidth() && yInt >= 0 && yInt < image.getHeight()) {
-            Pixel pixel = fractalImage.getPixel(xInt, yInt);
-            synchronized (pixel) {
-                pixel.addPoint(color);
-            }
+        if (xInt < 0 || xInt >= image.getWidth() || yInt < 0 || yInt >= image.getHeight()) {
+            return;
+        }
+
+        Pixel pixel = fractalImage.getPixel(xInt, yInt);
+        synchronized (pixel) {
+            pixel.addPoint(pixelColor);
         }
     }
 
@@ -117,19 +125,13 @@ public class Renderer {
      * @param point Исходная точка.
      * @return Список симметричных точек.
      */
-    private List<Point> getSymmetryPoints(Point point) {
+    private List<Point> applySymmetry(Point point) {
         List<Point> points = new ArrayList<>();
-        double angleStep = FULL_CIRCLE_DEGREE / axesCount;
-
-        for (int i = 0; i < axesCount; i++) {
-            double angle = Math.toRadians(i * angleStep);
-            double cos = Math.cos(angle);
-            double sin = Math.sin(angle);
-            double newX = point.x() * cos + point.y() * sin;
-            double newY = -point.x() * sin + point.y() * cos;
+        for (double[] angle : precomputedAngles) {
+            double newX = point.x() * angle[0] + point.y() * angle[1];
+            double newY = -point.x() * angle[1] + point.y() * angle[0];
             points.add(new Point(newX, newY));
         }
-
         return points;
     }
 

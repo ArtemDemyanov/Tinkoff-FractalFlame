@@ -1,4 +1,3 @@
-
 package backend.academy.generate;
 
 import backend.academy.config.InputConfig;
@@ -29,7 +28,7 @@ public abstract class AbstractFlameGenerator {
     public AbstractFlameGenerator(InputConfig config, List<Transformation> transformations, Renderer renderer) {
         this.config = config;
 
-        List<AffineTransformation> affineTransformations = IntStream.range(0, config.affineTransformationsCount())
+        List<AffineTransformation> affineTransformations = IntStream.range(0, config.affineTransformations())
             .mapToObj(x -> new AffineTransformation())
             .collect(Collectors.toList());
 

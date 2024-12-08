@@ -5,11 +5,10 @@ package backend.academy.domain;
  * Этот класс используется для работы с цветами, где каждый цвет представлен
  * красным, зеленым и синим компонентами.
  */
-public record Color(int r, int g, int b) {
+public record PixelColor(int red, int green, int blue) {
 
-    private static final int RED_SHIFT = 16;
+    private static final int RED_SHIFT = 8;
     private static final int GREEN_SHIFT = 8;
-
     /**
      * Возвращает цвет в формате RGB.
      * Собирает три компонента цвета (красный, зеленый, синий) в одно целочисленное значение.
@@ -17,6 +16,6 @@ public record Color(int r, int g, int b) {
      * @return Целочисленное представление цвета в формате RGB.
      */
     public int getRGB() {
-        return (r << RED_SHIFT) | (g << GREEN_SHIFT) | b;
+        return (red << RED_SHIFT) | (green << GREEN_SHIFT) | blue;
     }
 }
