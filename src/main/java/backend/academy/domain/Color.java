@@ -17,6 +17,6 @@ public record Color(int r, int g, int b) {
      * @return Целочисленное представление цвета в формате RGB.
      */
     public int getRGB() {
-        return (r << RED_SHIFT) | (GREEN_SHIFT << 8) | b;
+        return (r << RED_SHIFT) | (g << GREEN_SHIFT) | b;
     }
 }

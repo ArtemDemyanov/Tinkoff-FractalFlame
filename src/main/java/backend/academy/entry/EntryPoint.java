@@ -20,6 +20,7 @@ public class EntryPoint {
     private static final int DEFAULT_HEIGHT = 1080;
     private static final int DEFAULT_SAMPLES = 5;
     private static final int DEFAULT_ITERATIONS = 10000000;
+    public static final int DEFAULT_AFFINE_COUNT = 5;
     private static final int DEFAULT_THREADS = 4;
     private static final int DEFAULT_AXES = 2;
     private static final double DEFAULT_GAMMA = 2.2;
@@ -43,7 +44,7 @@ public class EntryPoint {
             int iterations = InputHandler.getInt(reader, DEFAULT_ITERATIONS);
 
             out.print("Введите количество аффинных преобразований (по умолчанию 5): ");
-            int affineTransformationsCount = InputHandler.getInt(reader, 5);
+            int affineTransformationsCount = InputHandler.getInt(reader, DEFAULT_AFFINE_COUNT);
 
             out.print("Включить многопоточность? (true/false): ");
             boolean multithreaded = InputHandler.getBoolean(reader, true);

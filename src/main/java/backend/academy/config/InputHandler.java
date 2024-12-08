@@ -15,14 +15,17 @@ import java.util.Scanner;
 /**
  * Класс для обработки пользовательского ввода.
  */
-public class InputHandler {
-    private static final PrintStream out = System.out;
+public final class InputHandler {
+    private static final PrintStream OUT = System.out;
     private static final String SPHERICAL = "spherical";
     private static final String HEART = "heart";
     private static final String POLAR = "polar";
     private static final String SWIRL = "swirl";
     private static final String SINUSOIDAL = "sinusoidal";
     private static final List<String> DEFAULT_TRANSFORMATIONS = List.of(SPHERICAL, HEART, POLAR, SWIRL, SINUSOIDAL);
+
+    private static final String INVALID_INPUT_MSG = "Некорректный ввод. Используется значение по умолчанию: ";
+    private static final String UNKNOWN_TRANSFORMATION_MSG = "Неизвестная трансформация: ";
 
     private InputHandler() {
         // Предотвращение создания экземпляра утилитного класса
@@ -40,7 +43,7 @@ public class InputHandler {
         try {
             return Integer.parseInt(input);
         } catch (NumberFormatException e) {
-            out.println("Некорректный ввод. Используется значение по умолчанию: " + defaultValue);
+            OUT.println(INVALID_INPUT_MSG + defaultValue);
             return defaultValue;
         }
     }
@@ -69,7 +72,7 @@ public class InputHandler {
         try {
             return Double.parseDouble(input);
         } catch (NumberFormatException e) {
-            out.println("Некорректный ввод. Используется значение по умолчанию: " + defaultValue);
+            OUT.println(INVALID_INPUT_MSG + defaultValue);
             return defaultValue;
         }
     }
@@ -109,8 +112,8 @@ public class InputHandler {
                 case SWIRL -> transformations.add(new SwirlTransformation());
                 case SINUSOIDAL -> transformations.add(new SinusoidalTransformation());
                 default -> {
-                    out.println("Неизвестная трансформация: " + name);
-                    throw new IllegalArgumentException("Неизвестная трансформация: " + name);
+                    OUT.println(UNKNOWN_TRANSFORMATION_MSG + name);
+                    throw new IllegalArgumentException(UNKNOWN_TRANSFORMATION_MSG + name);
                 }
             }
         }

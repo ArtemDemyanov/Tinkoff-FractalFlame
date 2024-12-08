@@ -5,10 +5,10 @@ import backend.academy.domain.Pixel;
 import backend.academy.domain.Point;
 import backend.academy.models.FractalImage;
 import java.awt.image.BufferedImage;
-import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import javax.imageio.ImageIO;
 
 /**
  * Класс Renderer используется для рендеринга фрактальных изображений.
@@ -81,11 +81,12 @@ public class Renderer {
                 int green = (pixel >> GREEN_CHANNEL_SHIFT) & COLOR_MASK;
                 int blue = pixel & COLOR_MASK;
 
-                red = (int) (MAX_COLOR_VALUE * Math.pow(red / (double)MAX_COLOR_VALUE, power));
-                green = (int) (MAX_COLOR_VALUE * Math.pow(green / (double)MAX_COLOR_VALUE, power));
-                blue = (int) (MAX_COLOR_VALUE * Math.pow(blue / (double)MAX_COLOR_VALUE, power));
+                red = (int) (MAX_COLOR_VALUE * Math.pow(red / (double) MAX_COLOR_VALUE, power));
+                green = (int) (MAX_COLOR_VALUE * Math.pow(green / (double) MAX_COLOR_VALUE, power));
+                blue = (int) (MAX_COLOR_VALUE * Math.pow(blue / (double) MAX_COLOR_VALUE, power));
 
-                int newPixel = (alpha << ALPHA_CHANNEL_SHIFT) | (red << RED_CHANNEL_SHIFT) | (green << GREEN_CHANNEL_SHIFT) | blue;
+                int newPixel = (alpha << ALPHA_CHANNEL_SHIFT) | (red << RED_CHANNEL_SHIFT)
+                    | (green << GREEN_CHANNEL_SHIFT) | blue;
                 image.setRGB(x, y, newPixel);
             }
         }
