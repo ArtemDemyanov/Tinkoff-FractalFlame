@@ -9,6 +9,7 @@ public record PixelColor(int red, int green, int blue) {
 
     private static final int RED_SHIFT = 8;
     private static final int GREEN_SHIFT = 8;
+
     /**
      * Возвращает цвет в формате RGB.
      * Собирает три компонента цвета (красный, зеленый, синий) в одно целочисленное значение.

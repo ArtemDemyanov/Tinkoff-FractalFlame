@@ -5,8 +5,18 @@ import java.util.Random;
 public record AffineCoefficient(double a, double b, double d, double e, double c, double f) {
 
     public static AffineCoefficient generate(Random random) {
-        double a, b, c, d, e, f;
-        double a2, b2, c2, d2, determinant, determinantSquare;
+        double a;
+        double b;
+        double c;
+        double d;
+        double e;
+        double f;
+        double a2;
+        double b2;
+        double c2;
+        double d2;
+        double determinant;
+        double determinantSquare;
 
         do {
             a = random.nextDouble(-1, 1);
@@ -27,7 +37,8 @@ public record AffineCoefficient(double a, double b, double d, double e, double c
         return new AffineCoefficient(a, b, d, e, c, f);
     }
 
-    private static boolean checkCoefficientsValidity(double a2, double b2, double c2, double d2, double determinantSquare) {
+    private static boolean checkCoefficientsValidity(double a2, double b2, double c2, double d2,
+        double determinantSquare) {
         return (a2 + c2 < 1) && (b2 + d2 < 1) && (a2 + b2 + c2 + d2 < 1 + determinantSquare);
     }
 }

@@ -1,7 +1,7 @@
 package backend.academy.render;
 
-import backend.academy.domain.PixelColor;
 import backend.academy.domain.Pixel;
+import backend.academy.domain.PixelColor;
 import backend.academy.domain.Point;
 import backend.academy.models.FractalImage;
 import java.awt.image.BufferedImage;
