@@ -1,29 +1,31 @@
 package backend.academy.samples;
 
 import backend.academy.config.InputConfig;
+import backend.academy.config.InputConfig.GenerationSettings;
+import backend.academy.config.InputConfig.ImageSettings;
 import backend.academy.generate.MultiThreadedGenerator;
 import backend.academy.generate.SingleThreadedGenerator;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.*;
 import org.junit.jupiter.api.Test;
-import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.List;
+
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class PerformanceTest {
 
     private InputConfig createConfig(int threads, boolean multithreaded) {
-        return new InputConfig(
-            1920, // width
-            1080, // height
-            100,  // samples
-            10000, // iterations
-            5,    // affine transformations count
-            List.of("Spherical", "Swirl", "Sinusoidal"), // transformations
-            multithreaded,
-            threads,
-            1     // axes count
-        );
+        // Создание настроек изображения
+        ImageSettings imageSettings = new ImageSettings(1920, 1080, 1);
+
+        // Создание настроек генерации
+        GenerationSettings generationSettings = new GenerationSettings(100, 10000, 5, multithreaded, threads);
+
+        // Трансформации
+        List<String> transformations = List.of("Spherical", "Swirl", "Sinusoidal");
+
+        return new InputConfig(imageSettings, generationSettings, transformations);
     }
 
     private List<Transformation> createTransformations() {
