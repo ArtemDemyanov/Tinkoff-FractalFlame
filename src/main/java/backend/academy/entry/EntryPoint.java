@@ -65,7 +65,8 @@ public class EntryPoint {
             double gamma = InputHandler.getDouble(reader, DEFAULT_GAMMA);
 
             InputConfig.ImageSettings imageSettings = new InputConfig.ImageSettings(width, height, axesCount);
-            InputConfig.GenerationSettings generationSettings = new InputConfig.GenerationSettings(samples, iterations, affineTransformationsCount, multithreaded, threads);
+            InputConfig.GenerationSettings generationSettings = new InputConfig.GenerationSettings(samples,
+                iterations, affineTransformationsCount, multithreaded, threads);
             InputConfig config = new InputConfig(imageSettings, generationSettings, transformationNames);
 
             Renderer renderer = new Renderer(config.width(), config.height(), config.axesCount());
