@@ -38,7 +38,7 @@ public class EntryPoint {
             int height = InputHandler.getInt(reader, DEFAULT_HEIGHT);
 
             out.print("Введите количество сэмплов: ");
-            int samplesCount = InputHandler.getInt(reader, DEFAULT_SAMPLES);
+            int samples = InputHandler.getInt(reader, DEFAULT_SAMPLES);
 
             out.print("Введите количество итераций: ");
             int iterations = InputHandler.getInt(reader, DEFAULT_ITERATIONS);
@@ -64,8 +64,9 @@ public class EntryPoint {
             out.print("Введите значение гаммы: ");
             double gamma = InputHandler.getDouble(reader, DEFAULT_GAMMA);
 
-            InputConfig config = new InputConfig(width, height, samplesCount, iterations, affineTransformationsCount,
-                transformationNames, multithreaded, threads, axesCount);
+            InputConfig.ImageSettings imageSettings = new InputConfig.ImageSettings(width, height, axesCount);
+            InputConfig.GenerationSettings generationSettings = new InputConfig.GenerationSettings(samples, iterations, affineTransformationsCount, multithreaded, threads);
+            InputConfig config = new InputConfig(imageSettings, generationSettings, transformationNames);
 
             Renderer renderer = new Renderer(config.width(), config.height(), config.axesCount());
 
