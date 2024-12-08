@@ -18,8 +18,11 @@ public class FlameGenerator {
     private final List<AffineTransformation> affineTransformations;
     private final List<Transformation> transformations;
 
+    private static final int MAX_COLOR_VALUE = 255;
+
     /**
-     * Конструктор создает генератор фракталов с указанными аффинными преобразованиями и дополнительными трансформациями.
+     * Конструктор создает генератор фракталов с указанными аффинными преобразованиями
+     * и дополнительными трансформациями.
      *
      * @param affineTransformations список аффинных преобразований
      * @param transformations список других видов трансформаций
@@ -56,9 +59,9 @@ public class FlameGenerator {
      */
     private Color getPointColor(Point point) {
         double r2 = point.x() * point.x() + point.y() * point.y();
-        int r = (int) (255 * Math.abs(Math.sin(r2)));
-        int g = (int) (255 * Math.abs(Math.sin(point.x() * Math.PI)));
-        int b = (int) (255 * Math.abs(Math.sin(point.y() * Math.PI)));
+        int r = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(r2)));
+            int g = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.x() * Math.PI)));
+        int b = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.y() * Math.PI)));
 
         return new Color(r, g, b);
     }

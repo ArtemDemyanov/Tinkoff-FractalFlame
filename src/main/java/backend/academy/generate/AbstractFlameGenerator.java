@@ -1,7 +1,7 @@
 
 package backend.academy.generate;
 
-import backend.academy.config.Config;
+import backend.academy.config.InputConfig;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.AffineTransformation;
 import backend.academy.transformation.Transformation;
@@ -15,7 +15,7 @@ import java.util.stream.IntStream;
  */
 public abstract class AbstractFlameGenerator {
 
-    protected final Config config;
+    protected final InputConfig config;
     protected final FlameGenerator flameGenerator;
     protected final Renderer renderer;
 
@@ -26,7 +26,7 @@ public abstract class AbstractFlameGenerator {
      * @param transformations Список трансформаций для применения в процессе генерации.
      * @param renderer Рендерер для отображения результата.
      */
-    public AbstractFlameGenerator(Config config, List<Transformation> transformations, Renderer renderer) {
+    public AbstractFlameGenerator(InputConfig config, List<Transformation> transformations, Renderer renderer) {
         this.config = config;
 
         List<AffineTransformation> affineTransformations = IntStream.range(0, config.affineTransformationsCount())

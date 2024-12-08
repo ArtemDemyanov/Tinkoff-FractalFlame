@@ -1,6 +1,6 @@
 package backend.academy.generate;
 
-import backend.academy.config.Config;
+import backend.academy.config.InputConfig;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.Transformation;
 import java.util.List;
@@ -13,7 +13,7 @@ import java.util.concurrent.Executors;
  */
 public class MultiThreadedGenerator extends AbstractFlameGenerator {
 
-    private final int THREADS_COUNT = config.threads();
+    private final int threadsCount = config.threads();
 
     /**
      * Конструктор, который инициализирует генератор с заданными параметрами конфигурации и рендерером.
@@ -22,7 +22,7 @@ public class MultiThreadedGenerator extends AbstractFlameGenerator {
      * @param transformations список трансформаций, применяемых при генерации.
      * @param renderer рендерер, используемый для отрисовки результатов генерации.
      */
-    public MultiThreadedGenerator(Config config, List<Transformation> transformations, Renderer renderer) {
+    public MultiThreadedGenerator(InputConfig config, List<Transformation> transformations, Renderer renderer) {
         super(config, transformations, renderer);
     }
 
@@ -34,7 +34,7 @@ public class MultiThreadedGenerator extends AbstractFlameGenerator {
      */
     @Override
     public void generate() throws InterruptedException {
-        ExecutorService executorService = Executors.newFixedThreadPool(THREADS_COUNT);
+        ExecutorService executorService = Executors.newFixedThreadPool(threadsCount);
         for (int i = 0; i < config.samples(); i++) {
             executorService.execute(this::generateFlameSample);
         }

@@ -1,13 +1,13 @@
 package backend.academy.entry;
 
-import backend.academy.config.Config;
+import backend.academy.config.InputConfig;
 import backend.academy.config.InputHandler;
 import backend.academy.generate.MultiThreadedGenerator;
 import backend.academy.generate.SingleThreadedGenerator;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.Transformation;
-import java.util.List;
 import java.io.PrintStream;
+import java.util.List;
 import java.util.Scanner;
 
 /**
@@ -16,6 +16,14 @@ import java.util.Scanner;
  */
 public class EntryPoint {
 
+    private static final int DEFAULT_WIDTH = 1920;
+    private static final int DEFAULT_HEIGHT = 1080;
+    private static final int DEFAULT_SAMPLES = 5;
+    private static final int DEFAULT_ITERATIONS = 10000000;
+    private static final int DEFAULT_THREADS = 4;
+    private static final int DEFAULT_AXES = 2;
+    private static final double DEFAULT_GAMMA = 2.2;
+
     /**
      * Запускает процесс генерации фракталов, руководствуясь вводом пользователя.
      */
@@ -23,18 +31,18 @@ public class EntryPoint {
         PrintStream out = System.out;
         try (Scanner reader = new Scanner(System.in)) {
             out.print("Введите ширину изображения: ");
-            int width = InputHandler.getInt(reader, 1920);
+            int width = InputHandler.getInt(reader, DEFAULT_WIDTH);
 
             out.print("Введите высоту изображения: ");
-            int height = InputHandler.getInt(reader, 1080);
+            int height = InputHandler.getInt(reader, DEFAULT_HEIGHT);
 
             out.print("Введите количество сэмплов: ");
-            int samplesCount = InputHandler.getInt(reader, 5);
+            int samplesCount = InputHandler.getInt(reader, DEFAULT_SAMPLES);
 
             out.print("Введите количество итераций: ");
-            int iterations = InputHandler.getInt(reader, 100000000);
+            int iterations = InputHandler.getInt(reader, DEFAULT_ITERATIONS);
 
-            out.print("Введите количество аффинных преобразований: ");
+            out.print("Введите количество аффинных преобразований (по умолчанию 5): ");
             int affineTransformationsCount = InputHandler.getInt(reader, 5);
 
             out.print("Включить многопоточность? (true/false): ");
@@ -43,19 +51,19 @@ public class EntryPoint {
             int threads = 1;
             if (multithreaded) {
                 out.print("Введите количество потоков: ");
-                threads = InputHandler.getInt(reader, 4);
+                threads = InputHandler.getInt(reader, DEFAULT_THREADS);
             }
 
             out.print("Выберите трансформации (Heart, Polar, Sinusoidal, Spherical, Swirl): ");
             List<String> transformationNames = InputHandler.getTransformations(reader);
 
             out.print("Введите количество осей симметрии: ");
-            int axesCount = InputHandler.getInt(reader, 1);
+            int axesCount = InputHandler.getInt(reader, DEFAULT_AXES);
 
             out.print("Введите значение гаммы: ");
-            double gamma = InputHandler.getDouble(reader, 2.2);
+            double gamma = InputHandler.getDouble(reader, DEFAULT_GAMMA);
 
-            Config config = new Config(width, height, samplesCount, iterations, affineTransformationsCount,
+            InputConfig config = new InputConfig(width, height, samplesCount, iterations, affineTransformationsCount,
                 transformationNames, multithreaded, threads, axesCount);
 
             Renderer renderer = new Renderer(config.width(), config.height(), config.axesCount());

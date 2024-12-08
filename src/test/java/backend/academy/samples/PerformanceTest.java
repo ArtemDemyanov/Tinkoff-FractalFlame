@@ -1,6 +1,6 @@
 package backend.academy.samples;
 
-import backend.academy.config.Config;
+import backend.academy.config.InputConfig;
 import backend.academy.generate.MultiThreadedGenerator;
 import backend.academy.generate.SingleThreadedGenerator;
 import backend.academy.render.Renderer;
@@ -12,8 +12,8 @@ import java.util.List;
 
 public class PerformanceTest {
 
-    private Config createConfig(int threads, boolean multithreaded) {
-        return new Config(
+    private InputConfig createConfig(int threads, boolean multithreaded) {
+        return new InputConfig(
             1920, // width
             1080, // height
             100,  // samples
@@ -36,8 +36,8 @@ public class PerformanceTest {
 
     @Test
     void comparePerformance() {
-        Config singleThreadConfig = createConfig(1, false);
-        Config multiThreadConfig = createConfig(4, true);
+        InputConfig singleThreadConfig = createConfig(1, false);
+        InputConfig multiThreadConfig = createConfig(4, true);
 
         Renderer renderer = new Renderer(singleThreadConfig.width(), singleThreadConfig.height(), singleThreadConfig.axesCount());
 

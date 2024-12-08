@@ -1,8 +1,8 @@
 package backend.academy.models;
 
 import backend.academy.domain.Pixel;
-import lombok.Getter;
 import java.util.stream.IntStream;
+import lombok.Getter;
 
 /**
  * Класс представляющий изображение фрактала.
@@ -25,7 +25,7 @@ public class FractalImage {
         this.width = width;
         this.height = height;
         this.pixels = new Pixel[width * height];
-        IntStream.range(0, width*height).forEach(i -> this.pixels[i] = new Pixel(0, 0,0));
+        IntStream.range(0, width * height).forEach(i -> this.pixels[i] = new Pixel(0, 0, 0));
     }
 
     /**

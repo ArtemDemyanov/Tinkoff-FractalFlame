@@ -1,6 +1,6 @@
 package backend.academy.generate;
 
-import backend.academy.config.Config;
+import backend.academy.config.InputConfig;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.Transformation;
 import java.util.List;
@@ -18,7 +18,7 @@ public class SingleThreadedGenerator extends AbstractFlameGenerator {
      * @param transformations список трансформаций, применяемых при генерации.
      * @param renderer рендерер, используемый для отрисовки результатов генерации.
      */
-    public SingleThreadedGenerator(Config config, List<Transformation> transformations, Renderer renderer) {
+    public SingleThreadedGenerator(InputConfig config, List<Transformation> transformations, Renderer renderer) {
         super(config, transformations, renderer);
     }
 

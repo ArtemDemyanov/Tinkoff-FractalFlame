@@ -2,26 +2,33 @@ package backend.academy.render;
 
 import backend.academy.domain.Color;
 import backend.academy.domain.Pixel;
-import backend.academy.models.FractalImage;
 import backend.academy.domain.Point;
-
-import javax.imageio.ImageIO;
+import backend.academy.models.FractalImage;
 import java.awt.image.BufferedImage;
+import javax.imageio.ImageIO;
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Класс для рендеринга фрактальных изображений с учетом симметрии и гамма-коррекции.
+ * Класс Renderer используется для рендеринга фрактальных изображений.
+ * Он поддерживает рендеринг с учётом симметрии и применяет гамма-коррекцию.
  */
 public class Renderer {
+
+    private static final int MAX_COLOR_VALUE = 255;
+    private static final double FULL_CIRCLE_DEGREE = 360.0;
+    private static final int COLOR_MASK = 0xFF;
+    private static final int ALPHA_CHANNEL_SHIFT = 24;
+    private static final int RED_CHANNEL_SHIFT = 16;
+    private static final int GREEN_CHANNEL_SHIFT = 8;
 
     private final BufferedImage image;
     private final FractalImage fractalImage;
     private final int axesCount;
 
     /**
-     * Конструктор класса Renderer.
+     * Создаёт экземпляр Renderer с заданными параметрами.
      *
      * @param width Ширина изображения.
      * @param height Высота изображения.
@@ -34,7 +41,7 @@ public class Renderer {
     }
 
     /**
-     * Рендерит точку с учетом симметрии.
+     * Рендерит точку и её симметричные отображения.
      *
      * @param point Точка для рендеринга.
      * @param color Цвет точки.
@@ -46,7 +53,7 @@ public class Renderer {
     }
 
     /**
-     * Рендерит полное изображение.
+     * Выводит окончательное изображение.
      */
     public void renderImage() {
         for (int y = 0; y < image.getHeight(); y++) {
@@ -58,39 +65,38 @@ public class Renderer {
     }
 
     /**
-     * Применяет гамма-коррекцию ко всем пикселям изображения.
+     * Применяет гамма-коррекцию к изображению.
      *
-     * @param gamma Значение гаммы.
+     * @param gamma Коэффициент гаммы.
      */
     public void applyGammaCorrection(double gamma) {
-        int newPixel;
         double power = 1.0 / gamma;
 
         for (int y = 0; y < image.getHeight(); y++) {
             for (int x = 0; x < image.getWidth(); x++) {
                 int pixel = image.getRGB(x, y);
 
-                int alpha = (pixel >> 24) & 0xff;
-                int red = (pixel >> 16) & 0xff;
-                int green = (pixel >> 8) & 0xff;
-                int blue = pixel & 0xff;
+                int alpha = (pixel >> ALPHA_CHANNEL_SHIFT) & COLOR_MASK;
+                int red = (pixel >> RED_CHANNEL_SHIFT) & COLOR_MASK;
+                int green = (pixel >> GREEN_CHANNEL_SHIFT) & COLOR_MASK;
+                int blue = pixel & COLOR_MASK;
 
-                red = (int) (255 * Math.pow(red / 255.0, power));
-                green = (int) (255 * Math.pow(green / 255.0, power));
-                blue = (int) (255 * Math.pow(blue / 255.0, power));
+                red = (int) (MAX_COLOR_VALUE * Math.pow(red / (double)MAX_COLOR_VALUE, power));
+                green = (int) (MAX_COLOR_VALUE * Math.pow(green / (double)MAX_COLOR_VALUE, power));
+                blue = (int) (MAX_COLOR_VALUE * Math.pow(blue / (double)MAX_COLOR_VALUE, power));
 
-                newPixel = (alpha << 24) | (red << 16) | (green << 8) | blue;
+                int newPixel = (alpha << ALPHA_CHANNEL_SHIFT) | (red << RED_CHANNEL_SHIFT) | (green << GREEN_CHANNEL_SHIFT) | blue;
                 image.setRGB(x, y, newPixel);
             }
         }
     }
 
     /**
-     * Рассчитывает координаты пикселя на изображении и устанавливает его цвет.
+     * Устанавливает цвет пикселя.
      *
-     * @param x Горизонтальная координата точки.
-     * @param y Вертикальная координата точки.
-     * @param color Цвет для установки.
+     * @param x Горизонтальная координата пикселя.
+     * @param y Вертикальная координата пикселя.
+     * @param color Цвет пикселя.
      */
     private void setPixel(double x, double y, Color color) {
         int xInt = (int) ((x + 1) * image.getWidth() / 2);
@@ -105,14 +111,14 @@ public class Renderer {
     }
 
     /**
-     * Генерирует список точек, учитывая оси симметрии для данной точки.
+     * Генерирует симметричные точки для заданной точки.
      *
-     * @param point Основная точка для генерации симметричных точек.
+     * @param point Исходная точка.
      * @return Список симметричных точек.
      */
     private List<Point> getSymmetryPoints(Point point) {
         List<Point> points = new ArrayList<>();
-        double angleStep = 360.0 / axesCount;
+        double angleStep = FULL_CIRCLE_DEGREE / axesCount;
 
         for (int i = 0; i < axesCount; i++) {
             double angle = Math.toRadians(i * angleStep);

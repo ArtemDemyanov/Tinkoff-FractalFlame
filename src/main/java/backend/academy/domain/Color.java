@@ -7,6 +7,9 @@ package backend.academy.domain;
  */
 public record Color(int r, int g, int b) {
 
+    private static final int RED_SHIFT = 16;
+    private static final int GREEN_SHIFT = 8;
+
     /**
      * Возвращает цвет в формате RGB.
      * Собирает три компонента цвета (красный, зеленый, синий) в одно целочисленное значение.
@@ -14,6 +17,6 @@ public record Color(int r, int g, int b) {
      * @return Целочисленное представление цвета в формате RGB.
      */
     public int getRGB() {
-        return (r << 16) | (g << 8) | b;
+        return (r << RED_SHIFT) | (GREEN_SHIFT << 8) | b;
     }
 }

@@ -6,31 +6,51 @@ import backend.academy.transformation.SinusoidalTransformation;
 import backend.academy.transformation.SphericalTransformation;
 import backend.academy.transformation.SwirlTransformation;
 import backend.academy.transformation.Transformation;
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
 
 
+/**
+ * Класс для обработки пользовательского ввода.
+ */
 public class InputHandler {
+    private static final PrintStream out = System.out;
+    private static final String SPHERICAL = "spherical";
+    private static final String HEART = "heart";
+    private static final String POLAR = "polar";
+    private static final String SWIRL = "swirl";
+    private static final String SINUSOIDAL = "sinusoidal";
+    private static final List<String> DEFAULT_TRANSFORMATIONS = List.of(SPHERICAL, HEART, POLAR, SWIRL, SINUSOIDAL);
 
-    /**
-     * Читает из сканера целое число или возвращает значение по умолчанию.
-     *
-     * @param scanner сканер для чтения ввода.
-     * @param defaultValue значение по умолчанию.
-     * @return считанное число или значение по умолчанию, если ввод был пустым.
-     */
-    public static int getInt(Scanner scanner, int defaultValue) {
-        String input = scanner.nextLine();
-        return input.isEmpty() ? defaultValue : Integer.parseInt(input);
+    private InputHandler() {
+        // Предотвращение создания экземпляра утилитного класса
     }
 
     /**
-     * Читает из сканера булево значение или возвращает значение по умолчанию.
+     * Читает целочисленное значение из сканера или использует значение по умолчанию.
      *
-     * @param scanner сканер для чтения ввода.
-     * @param defaultValue значение по умолчанию.
-     * @return считанное булево значение или значение по умолчанию, если ввод был пустым.
+     * @param scanner сканер для чтения ввода
+     * @param defaultValue значение по умолчанию
+     * @return считанное значение или значение по умолчанию, если ввод некорректен
+     */
+    public static int getInt(Scanner scanner, int defaultValue) {
+        String input = scanner.nextLine();
+        try {
+            return Integer.parseInt(input);
+        } catch (NumberFormatException e) {
+            out.println("Некорректный ввод. Используется значение по умолчанию: " + defaultValue);
+            return defaultValue;
+        }
+    }
+
+    /**
+     * Читает логическое значение из сканера или использует значение по умолчанию.
+     *
+     * @param scanner сканер для чтения ввода
+     * @param defaultValue значение по умолчанию
+     * @return считанное значение или значение по умолчанию, если ввод некорректен
      */
     public static boolean getBoolean(Scanner scanner, boolean defaultValue) {
         String input = scanner.nextLine();
@@ -38,32 +58,32 @@ public class InputHandler {
     }
 
     /**
-     * Читает из сканера число с плавающей точкой или возвращает значение по умолчанию при ошибке формата.
+     * Читает значение с плавающей точкой из сканера или использует значение по умолчанию.
      *
-     * @param scanner сканер для чтения ввода.
-     * @param defaultValue значение по умолчанию.
-     * @return считанное число или значение по умолчанию, если ввод некорректен.
+     * @param scanner сканер для чтения ввода
+     * @param defaultValue значение по умолчанию
+     * @return считанное значение или значение по умолчанию, если ввод некорректен
      */
     public static double getDouble(Scanner scanner, double defaultValue) {
         String input = scanner.nextLine();
         try {
             return Double.parseDouble(input);
         } catch (NumberFormatException e) {
-            System.out.println("Некорректный ввод. Используется значение по умолчанию: " + defaultValue);
+            out.println("Некорректный ввод. Используется значение по умолчанию: " + defaultValue);
             return defaultValue;
         }
     }
 
     /**
-     * Получает список названий трансформаций из строки, разделенной запятыми.
+     * Получает список трансформаций из строки, разделенной запятыми.
      *
-     * @param scanner сканер для чтения ввода.
-     * @return список названий трансформаций.
+     * @param scanner сканер для чтения ввода
+     * @return список трансформаций
      */
     public static List<String> getTransformations(Scanner scanner) {
         String input = scanner.nextLine();
         if (input.isEmpty()) {
-            return List.of("spherical", "heart", "polar", "swirl", "sinusoidal");
+            return new ArrayList<>(DEFAULT_TRANSFORMATIONS);
         }
         String[] transformations = input.split(",");
         List<String> result = new ArrayList<>();
@@ -74,21 +94,24 @@ public class InputHandler {
     }
 
     /**
-     * Создает объекты трансформаций на основе списка названий.
+     * Создает список объектов трансформации на основе переданных названий.
      *
-     * @param names список названий трансформаций.
-     * @return список объектов трансформаций.
+     * @param names список названий трансформаций
+     * @return список объектов трансформаций
      */
     public static List<Transformation> createTransformations(List<String> names) {
         List<Transformation> transformations = new ArrayList<>();
         for (String name : names) {
             switch (name.toLowerCase()) {
-                case "spherical" -> transformations.add(new SphericalTransformation());
-                case "heart" -> transformations.add(new HeartTransformation());
-                case "polar" -> transformations.add(new PolarTransformation());
-                case "swirl" -> transformations.add(new SwirlTransformation());
-                case "sinusoidal" -> transformations.add(new SinusoidalTransformation());
-                default -> throw new IllegalArgumentException("Неизвестная трансформация: " + name);
+                case SPHERICAL -> transformations.add(new SphericalTransformation());
+                case HEART -> transformations.add(new HeartTransformation());
+                case POLAR -> transformations.add(new PolarTransformation());
+                case SWIRL -> transformations.add(new SwirlTransformation());
+                case SINUSOIDAL -> transformations.add(new SinusoidalTransformation());
+                default -> {
+                    out.println("Неизвестная трансформация: " + name);
+                    throw new IllegalArgumentException("Неизвестная трансформация: " + name);
+                }
             }
         }
         return transformations;
