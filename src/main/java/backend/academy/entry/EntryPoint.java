@@ -2,9 +2,9 @@ package backend.academy.entry;
 
 import backend.academy.config.InputConfig;
 import backend.academy.config.InputHandler;
+import backend.academy.generate.AbstractFlameGenerator;
 import backend.academy.generate.MultiThreadedGenerator;
 import backend.academy.generate.SingleThreadedGenerator;
-import backend.academy.generate.AbstractFlameGenerator;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.Transformation;
 import java.io.PrintStream;

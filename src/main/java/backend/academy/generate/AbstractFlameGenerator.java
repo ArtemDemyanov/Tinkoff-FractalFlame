@@ -17,11 +17,13 @@ import java.util.stream.IntStream;
  * Служит основой для создания конкретных реализаций генераторов.
  */
 public abstract class AbstractFlameGenerator {
+    private static final int MAX_COLOR_VALUE = 255;
 
     protected final InputConfig config;
     protected final Renderer renderer;
     protected final List<AffineTransformation> affineTransformations;
     protected final List<Transformation> transformations;
+
     /**
      * Конструктор создаёт экземпляр генератора фракталов.
      *
@@ -57,6 +59,7 @@ public abstract class AbstractFlameGenerator {
             renderer.renderPoint(currentPoint, getPointColor(currentPoint));
         }
     }
+
     /**
      * Вычисляет цвет точки на основе её координат, применяя специфические математические функции.
      *
@@ -65,9 +68,9 @@ public abstract class AbstractFlameGenerator {
      */
     private PixelColor getPointColor(Point point) {
         double r2 = point.x() * point.x() + point.y() * point.y();
-        int r = (int) (255 * Math.abs(Math.sin(r2)));
-        int g = (int) (255 * Math.abs(Math.sin(point.x() * Math.PI)));
-        int b = (int) (255 * Math.abs(Math.sin(point.y() * Math.PI)));
+        int r = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(r2)));
+        int g = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.x() * Math.PI)));
+        int b = (int) (MAX_COLOR_VALUE * Math.abs(Math.sin(point.y() * Math.PI)));
 
         return new PixelColor(r, g, b);
     }
