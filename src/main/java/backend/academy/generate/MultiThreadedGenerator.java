@@ -6,6 +6,7 @@ import backend.academy.transformation.Transformation;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Класс для многопоточной генерации фрактальных изображений.
@@ -36,8 +37,9 @@ public class MultiThreadedGenerator extends AbstractFlameGenerator {
     public void generate() throws InterruptedException {
         ExecutorService executorService = Executors.newFixedThreadPool(threadsCount);
         for (int i = 0; i < config.samples(); i++) {
-            executorService.execute(this::generateFlameSample);
+            executorService.execute(() -> generateFlameSample(config.iterations()));
         }
         executorService.shutdown();
+        executorService.awaitTermination(Long.MAX_VALUE, TimeUnit.NANOSECONDS);
     }
 }

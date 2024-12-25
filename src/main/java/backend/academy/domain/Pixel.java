@@ -27,6 +27,7 @@ import lombok.Getter;
 
     /**
      * Устанавливает новые значения RGB для этого пикселя.
+     *
      * @param red   новое значение красного компонента.
      * @param green новое значение зелёного компонента.
      * @param blue  новое значение синего компонента.
@@ -35,21 +36,24 @@ import lombok.Getter;
         this.red = red;
         this.green = green;
         this.blue = blue;
+        new PixelColor(this.red, this.green, this.blue);
     }
 
     /**
      * Добавляет цвет к пикселю, усредняя его с существующим цветом на основе количества попаданий.
+     *
      * @param pixelColor Цвет, который будет добавлен к пикселю.
      */
     public void addPoint(PixelColor pixelColor) {
         if (pointsCount == 0) {
             setRGB(pixelColor.red(), pixelColor.green(), pixelColor.blue());
         } else {
-            red = (red + pixelColor.red()) / 2;
-            green = (green + pixelColor.green()) / 2;
-            blue = (blue + pixelColor.blue()) / 2;
+            red = (red * pointsCount + pixelColor.red()) / (pointsCount + 1);
+            green = (green * pointsCount + pixelColor.green()) / (pointsCount + 1);
+            blue = (blue * pointsCount + pixelColor.blue()) / (pointsCount + 1);
         }
-        this.pointsCount++;
+        pointsCount++;
+        new PixelColor(this.red, this.green, this.blue);
     }
 
     /**

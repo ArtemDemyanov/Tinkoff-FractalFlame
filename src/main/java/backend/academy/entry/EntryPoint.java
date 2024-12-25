@@ -4,6 +4,7 @@ import backend.academy.config.InputConfig;
 import backend.academy.config.InputHandler;
 import backend.academy.generate.MultiThreadedGenerator;
 import backend.academy.generate.SingleThreadedGenerator;
+import backend.academy.generate.AbstractFlameGenerator;
 import backend.academy.render.Renderer;
 import backend.academy.transformation.Transformation;
 import java.io.PrintStream;
@@ -73,13 +74,12 @@ public class EntryPoint {
 
             List<Transformation> transformations = InputHandler.createTransformations(transformationNames);
 
-            if (config.multithreaded()) {
-                MultiThreadedGenerator multiGenerator = new MultiThreadedGenerator(config, transformations, renderer);
-                multiGenerator.generate();
-            } else {
-                SingleThreadedGenerator generator = new SingleThreadedGenerator(config, transformations, renderer);
-                generator.generate();
-            }
+            AbstractFlameGenerator generator = config.multithreaded()
+                ? new MultiThreadedGenerator(config, transformations, renderer)
+                : new SingleThreadedGenerator(config, transformations, renderer);
+
+            generator.generate();
+
             renderer.applyGamma(gamma);
             renderer.render();
             renderer.saveImage();

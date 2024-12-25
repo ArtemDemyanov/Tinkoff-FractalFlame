@@ -29,7 +29,7 @@ public class SingleThreadedGenerator extends AbstractFlameGenerator {
     @Override
     public void generate() {
         for (int i = 0; i < config.samples(); i++) {
-            generateFlameSample();
+            generateFlameSample(config.iterations());
         }
     }
 }

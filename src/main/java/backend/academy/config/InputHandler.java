@@ -22,7 +22,7 @@ public final class InputHandler {
     private static final String POLAR = "polar";
     private static final String SWIRL = "swirl";
     private static final String SINUSOIDAL = "sinusoidal";
-    private static final List<String> DEFAULT_TRANSFORMATIONS = List.of(SPHERICAL);
+    private static final List<String> DEFAULT_TRANSFORMATIONS = List.of(SPHERICAL, HEART, POLAR);
 
     private static final String INVALID_INPUT_MSG = "Некорректный ввод. Используется значение по умолчанию: ";
     private static final String UNKNOWN_TRANSFORMATION_MSG = "Неизвестная трансформация: ";

@@ -57,11 +57,20 @@ public class InputConfig {
 
     /**
      * Класс для параметров изображения.
-     */public record ImageSettings(int width, int height, int axesCount) {
+     * @param width ширина изображения
+     * @param height высота изображения
+     * @param axesCount количество осей для фрактала
+     */
+    public record ImageSettings(int width, int height, int axesCount) {
      }
 
     /**
      * Класс для параметров генерации.
+     * @param samples количество проб для расчета
+     * @param iterations количество итераций генерации
+     * @param affineTransformations количество аффинных преобразований
+     * @param multithreaded флаг многопоточности
+     * @param threads количество потоков для генерации
      */
     public record GenerationSettings(int samples, int iterations, int affineTransformations, boolean multithreaded,
                                      int threads) {
